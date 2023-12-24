@@ -41,7 +41,7 @@ def predict():
         # Make a prediction using the loaded model
         prediction = loaded_model.transform(features_df).select('prediction').collect()[0]['prediction']
 
-        return jsonify({'HouePricePredction': prediction})
+        return jsonify({'HousePricePredction': prediction})
 
     except Exception as e:
         return jsonify({'error': f'An internal server error occurred: {str(e)}'}), 500
