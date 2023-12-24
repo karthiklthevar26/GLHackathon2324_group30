@@ -7,16 +7,16 @@ from pyspark.sql import Row
 app = Flask(__name__)
 
 # Create a Spark session
-spark = SparkSession.builder.master("local").appName("RandomForestApp").getOrCreate()
+spark = SparkSession.builder.master("local").appName("HousePriceApp").getOrCreate()
 
-# Load your trained PySpark RandomForestRegressor model
+# Load model
 model_path = "model/houseprice_model"
 loaded_model = PipelineModel.load(model_path)
 
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        # Get the JSON data from the request
+        # Get the JSON data from the postman request
         data = request.get_json(force=True)
 
         # Logging for debugging
@@ -41,7 +41,7 @@ def predict():
         # Make a prediction using the loaded model
         prediction = loaded_model.transform(features_df).select('prediction').collect()[0]['prediction']
 
-        return jsonify({'HousePricePredction': prediction})
+        return jsonify({'HousePricePrediction': prediction})
 
     except Exception as e:
         return jsonify({'error': f'An internal server error occurred: {str(e)}'}), 500
